@@ -1,0 +1,86 @@
+django-admin.py startproject mysite
+
+runserver
+
+syncdb
+
+startapp
+
+models and fields in models.py
+    charfield
+
+sql
+
+shell
+
+admin.site.register(Poll)
+    admin options as class
+    fieldsets
+    inlines
+    list display filter search_fields
+
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
+views
+generic listview
+    
+urlpatterns(regex, views.as_view(), name, namespace)
+
+url 'namespace:name'
+
+get_object_or_404
+render(request, html, {poll, error_message})
+httpresponseredirect(reverse())
+
+tests
+
+static
+
+-------------------------------- PART 1 -----------------------------------
+
+1. create project (django-admin.py startproject <projectname>)
+2. run server (python manage.py runserver)
+3. sync db (python manage.py syncdb)
+4. create app (python manage.py startapp polls)
+5. create models (from django.db import models)
+6. add new app in settings.py "installed apps"
+7. generate sqlite database (python manage.py sql polls)
+8. sync db
+9. (optional) run django api : shell
+    - from polls.model import Poll, Choice
+    - from django.utils import timezone
+    - .save() function
+    - adding a __unicode__() to models to make it more user-friendly
+    - _set 
+
+---------------------------------------------------------------------------
+
+-------------------------------- PART 2 -----------------------------------
+
+1. /admin/
+2. creating more superusers: python manage.py createsuperuser --username=joe --email=joe@example.com
+3. create admin interface for the Poll model (admin.py, ... admin.site.register(Poll))
+4. edit admin interface 
+    -fields
+    -fieldsets
+    -admin.ModelAdmin
+    -classes collapse
+    -StackedInline vs TabularInline
+    -list_display
+    -list_filter
+    -search_fields
+
+5. templates (settings.py, TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')])
+---------------------------------------------------------------------------
+
+-------------------------------- PART 3 -----------------------------------
+
+1. URLConfs
+2. update views.py
+3. create urls.py
+4. point the root URLconf at the polls.urls module (mysite/urls.py)
+5. url()
+6. **********DIES***********
+7. render()
+8. get(), get_object_or_404(Poll, pk=poll_id)
+---------------------------------------------------------------------------
