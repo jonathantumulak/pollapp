@@ -11,7 +11,7 @@ from polls.models import Poll
 class PollMethodTests(TestCase):
     def test_was_published_recently_with_future_poll(self):
         future_poll = Poll(
-            pub_date=timezone.now()) + datetime.timedelta(days=30)
+            pub_date=timezone.now() + datetime.timedelta(days=30))
         self.assertEqual(future_poll.was_published_recently(), False)
 
     def test_was_published_with_old_poll(self):
@@ -25,7 +25,7 @@ class PollMethodTests(TestCase):
         self.assertEqual(recent_poll.was_published_recently(), True)
 
 
-def create_poll(question, day):
+def create_poll(question, days):
     return Poll.objects.create(question=question,
                                pub_date=timezone.now() +
                                datetime.timedelta(days=days))
@@ -60,10 +60,10 @@ class PollViewTest(TestCase):
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(
             response.context['latest_poll_list'],
-            ['<Poll: Past poll.']
+            ['<Poll: Past poll.>']
         )
 
-    def test_index_view_with two_past_polls(self):
+    def test_index_view_with_two_past_polls(self):
         create_poll(question="Past poll 1.", days=-30)
         create_poll(question="Past poll 2.", days=-5)
         response = self.client.get(reverse('polls:index'))
@@ -77,11 +77,11 @@ class PollIndexDetailTests(TestCase):
     def test_detail_view_with_a_future_poll(self):
         future_poll = create_poll(question='Future poll', days=5)
         response = self.client.get(reverse('polls:detail',
-                                   args=(future_poll.id)))
+                                   args=(future_poll.id,)))
         self.assertEqual(response.status_code, 404)
 
-    def test__detail_view_with_a_past_poll(self):
+    def test_detail_view_with_a_past_poll(self):
         past_poll = create_poll(question='Past Poll.', days=-5)
         response = self.client.get(reverse('polls:detail',
-                                           args=(past_poll.id)))
+                                           args=(past_poll.id,)))
         self.assertContains(response, past_poll.question, status_code=200)
